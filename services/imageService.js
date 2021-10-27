@@ -57,3 +57,8 @@ function setImage(imgId) {
 function getImgById(imgId) {
   return gImgs.filter((img) => img.id === imgId);
 }
+
+function uploadImage() {
+  var elFile = document.querySelector('.input-file');
+  elFile.click();
+}

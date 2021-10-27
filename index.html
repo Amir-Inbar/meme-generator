@@ -9,10 +9,10 @@
     <title>MeMe Generator</title>
 </head>
 <header>
-    <div class="nav-container"></div>
+    <div class="nav-container "></div>
 </header>
 <body onload="init()">
-    <main class="main-content">
+    <main class="main-content" style="display: none;">
         <div class="meme-editor">
             <div class="left-controller">
                 <div class="canvas-container"><canvas class="canvas" width="500" height="500"></canvas></div>
@@ -27,7 +27,6 @@
                         <button class=" bigger grid-btn" onclick="onResizeFont('up')">A</button>
                          <button class=" smaller grid-btn" onclick="onResizeFont('down')">A</button>
                     </div>
-                     
                     <div class="main-btns-grid">
                         <button class="color-input-btn"><input type="color" class="color-input grid-btn"  onchange="OnPickColor(this.value)"></button>
                         <button class="stroke-input-color">S<input type="color" class="stroke-input" onchange="OnPickStroke(this.value)"></button>
@@ -57,7 +56,13 @@
             </div>
         </div>
     </main>
-    <div class="gallery-container"></div>
+    <div class="panel-control main-content">
+        <div class="searchbar"><input type="search" class="searchbar-input" name="search" ></div>
+        <div class="keywords-list"></div>
+        <button class="more-kewyords">More</button>
+    </div>
+    <div class="gallery-container">
+    </div>
         
         
         
@@ -67,7 +72,5 @@
     <script src="./services/memeService.js"></script>
     <script src="./controllers/imageController.js"></script>
     <script src="./controllers/memeController.js"></script>
-    <!-- <script src="./services/listenerEvents.js"></script>
-    <script src="./services/mainEvents.js"></script> -->
 </body>
 </html>

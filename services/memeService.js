@@ -57,7 +57,6 @@ function resizeCanvas(img) {
   var height = elContainer.offsetHeight;
   var width = elContainer.offsetWidth;
   var ratio = img.width / img.height;
-
   gCanvas.width = width;
   gCanvas.height = Math.min(gCanvas.width / ratio, height);
   gCanvas.style.top = (height = gCanvas.height) / 2 + 'px';
