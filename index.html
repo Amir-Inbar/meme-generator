@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/navBar.css">
+    <title>MeMe Generator</title>
+</head>
+<header>
+    <div class="nav-container"></div>
+</header>
+<body onload="init()">
+    <main class="main-content">
+        <div class="meme-editor">
+            <div class="left-controller">
+                <div class="canvas-container"><canvas class="canvas" width="500" height="500"></canvas></div>
+            </div>
+            <div class="right-controller">
+                <div class="box-controller">
+                    <div class="back-gallery"><button class="back-gallery-btn grid-btn">Back to Gallery</button></div>
+                    <input type="text" placeholder="write your message here" class="canvas-input"  onkeyup="onUpdateCurrLine(this.value)"> 
+                    <div class="upper-btns">
+                        <button class="grid-btn line-btn" onclick="onRenderNewLine()"></button>
+                        <button class="grid-btn delete" onclick="onClearCanvas()"></button>
+                        <button class=" bigger grid-btn" onclick="onResizeFont('up')">A</button>
+                         <button class=" smaller grid-btn" onclick="onResizeFont('down')">A</button>
+                    </div>
+                     
+                    <div class="main-btns-grid">
+                        <button class="color-input-btn"><input type="color" class="color-input grid-btn"  onchange="OnPickColor(this.value)"></button>
+                        <button class="stroke-input-color">S<input type="color" class="stroke-input" onchange="OnPickStroke(this.value)"></button>
+                        <button class=" left grid-btn" onclick="onTxtDirection('left')"></button>
+                        <button class=" center grid-btn" onclick="onTxtDirection('center')"></button>
+                        <button class=" right grid-btn" onclick="onTxtDirection('right')"></button>
+                        <select name="font-select" class="font-select" onchange="onFontPick(this.value)">
+                            <option value="Impact">impact</option>
+                            <option value="Ariel">ariel</option>
+                            <option value="Serif">serif</option>
+                        </select>
+                    </div>
+                    <div class=" stickers-container">
+                        <div class="stickers">
+                    </div></div>
+                    <div class="grid-files">
+                       <button class=" download grid-btn download-btn">Download the MeMe!</button>
+                        <button class=" upload grid-btn upload-btn">Upload Image</button>
+                        
+                    </div>
+                    <div class="social-media">
+                       <button class=" facebook grid-btn fb-btn">facebook</button>
+                      <button class=" twitter grid-btn tw-btn">twitter</button>
+                        <button class=" instegram grid-btn in-btn">instegram</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div class="gallery-container"></div>
+        
+        
+        
+    <script src="./utils/navBar.js"></script>
+    <script src="./utils/utils.js"></script>
+    <script src="./services/imageService.js"></script>
+    <script src="./services/memeService.js"></script>
+    <script src="./controllers/imageController.js"></script>
+    <script src="./controllers/memeController.js"></script>
+    <!-- <script src="./services/listenerEvents.js"></script>
+    <script src="./services/mainEvents.js"></script> -->
+</body>
+</html>
