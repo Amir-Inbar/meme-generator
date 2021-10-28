@@ -1,37 +1,43 @@
-var gOldTxt;
-var gRects = [];
 var gIsDragging = false;
 var gDragStartPos;
 var gTouchEvs = ['touchstart', 'touchmove', 'touchend'];
-
+var gCurrRatio;
+var gCurrDrag;
+var gScalling = false;
 function init() {
   createNav();
-  renderCanvas();
   renderImages();
+  createInitStickers();
+  renderStickers();
   addEventListeners();
+  renderCanvas();
 }
 
 function addEventListeners() {
   addMouseListeners();
   addTouchListeners();
+  window.addEventListener('resize', () => {
+    resizeCanvas();
+    renderCanvas();
+  });
 }
 
 function addMouseListeners() {
-  gCanvas.addEventListener('mousedown', onDown);
-  gCanvas.addEventListener('mousemove', onMove);
-  gCanvas.addEventListener('mouseup', onUp);
+  gElCanvas.addEventListener('mousedown', onDown);
+  gElCanvas.addEventListener('mousemove', onMove);
+  gElCanvas.addEventListener('mouseup', onUp);
 }
 
 function addTouchListeners() {
-  gCanvas.addEventListener('touchmove', onMove);
-  gCanvas.addEventListener('touchstart', onDown);
-  gCanvas.addEventListener('touchend', onUp);
+  gElCanvas.addEventListener('touchmove', onMove);
+  gElCanvas.addEventListener('touchstart', onDown);
+  gElCanvas.addEventListener('touchend', onUp);
 }
 
 function onFillInput() {
-  var meme = getActiveLine();
+  var activeLine = getActiveLine();
   var elInput = document.querySelector('.canvas-input');
-  if (meme.txt !== 'Type Me') elInput.value = meme.txt;
+  if (activeLine.txt !== 'Type Me') elInput.value = activeLine.txt;
 }
 
 function emptyInput() {
@@ -43,39 +49,72 @@ function onDown(ev) {
   emptyInput();
   const pos = getEvPos(ev);
   if (!lineClicked(pos)) return;
-  renderCanvas();
   gDragStartPos = pos;
-  gCanvas.style.cursor = 'grabbing';
+  gElCanvas.style.cursor = 'grabbing';
 }
 
 function onMove(ev) {
-  var activeLine = getActiveLine();
+  const pos = getEvPos(ev);
+  if (gCurrDrag === 'line') {
+    var activeLine = getActiveLine();
+  }
+  if (gCurrDrag === 'sticker') {
+    var activeSticker = getActiveSticker();
+  }
   if (gIsDragging) {
-    const pos = getEvPos(ev);
     const dx = pos.x - gDragStartPos.x;
     const dy = pos.y - gDragStartPos.y;
-    activeLine.pos.x += dx;
-    activeLine.pos.y += dy;
+    if (gCurrDrag === 'line') {
+      activeLine.pos.x += dx;
+      activeLine.pos.y += dy;
+    }
+    if (gCurrDrag === 'sticker') {
+      activeSticker.pos.x += dx;
+      activeSticker.pos.y += dy;
+    }
+    gDragStartPos = pos;
+    renderCanvas();
+    return;
+  }
+  if (gScalling) {
+    resizingSticker(pos, gDragStartPos);
     gDragStartPos = pos;
     renderCanvas();
   }
 }
 
 function onUp() {
-  gCanvas.style.cursor = 'grab';
+  gElCanvas.style.cursor = 'grab';
   var activeLine = getActiveLine();
+  gIsDragging = gScalling = false;
   if (!activeLine) return;
-  gIsDragging = false;
   renderCanvas();
 }
 
 function lineClicked(pos) {
   var idx = findClickedLineIdx(pos);
-  updateActiveLine(idx);
-  renderCanvas();
+  var stickerIdx = findclickedStickerIdx(pos);
+  if (stickerIdx !== -1) {
+    var isSizing = isSizingSticker(stickerIdx, pos);
+  }
+  if (stickerIdx !== -1) {
+    updateActiveSticker(stickerIdx);
+    gCurrDrag = 'sticker';
+  }
   if (idx !== -1) {
+    updateActiveLine(idx);
+    gCurrDrag = 'line';
+  }
+  renderCanvas();
+  if (idx !== -1 || stickerIdx !== -1 || isSizing) {
     onFillInput();
     gIsDragging = true;
+    if (isSizing) {
+      gCurrDrag = '';
+      gScalling = true;
+      gIsDragging = false;
+      return true;
+    }
     return true;
   } else return false;
 }
@@ -102,9 +141,11 @@ function renderCanvas() {
   var img = new Image();
   img.src = `../img/${meme.selectedImgId}.jpg`;
   img.onload = () => {
-    resizeCanvas(img);
-    gCtx.drawImage(img, 0, 0, gCanvas.width, gCanvas.height);
+    gCurrRatio = img.height / img.width;
+    resizeCanvas();
+    gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height);
     drawText();
+    addStickers();
     markLine();
   };
 }
@@ -117,10 +158,8 @@ function drawText() {
     gCtx.font = `${memeLine.size}px ${memeLine.font}`;
     var txtWidth = gCtx.measureText(memeLine.txt).width;
     memeLine.txtWidth = txtWidth;
-    // changeProperty('txtWidth', txtWidth);
     gCtx.textAlign = 'start';
     gCtx.textBaseline = 'alphabetic';
-    // gCtx.direction = `${memeLines.align}`;
 
     gCtx.lineWidth = 1;
     gCtx.strokeStyle = `${memeLine.stroke}`;
@@ -131,7 +170,6 @@ function drawText() {
     gCtx.fillText(memeLine.txt, memeLine.pos.x, memeLine.pos.y);
     gCtx.strokeText(memeLine.txt, memeLine.pos.x, memeLine.pos.y);
   });
-  // drawRect();
 }
 
 function markLine() {
@@ -151,8 +189,9 @@ function markLine() {
   });
 }
 
-function onClearCanvas() {
-  clearCanvas(true);
+function onRemoveMeme() {
+  removeMeme();
+  emptyInput();
   renderCanvas();
 }
 
@@ -177,7 +216,7 @@ function onResizeFont(resizeBy) {
 }
 
 function onTxtDirection(AlignBy) {
-  txtDirection(AlignBy, gCanvas.width);
+  txtDirection(AlignBy, gElCanvas.width);
   renderCanvas();
 }
 
@@ -193,6 +232,62 @@ function onUpdateCurrLine(txt) {
   renderCanvas();
 }
 
+function onBackGallery() {
+  const elMainContents = document.querySelectorAll('.main-content');
+  elMainContents.forEach((elMainContainer) => {
+    elMainContainer.classList.toggle('hide-panels');
+  });
+}
+
+function onDownloadImg(elLink) {
+  var imgContent = gElCanvas.toDataURL('image/jpeg/png');
+  elLink.href = imgContent;
+  elDownloadBtn = document.querySelector('.download-btn-span');
+  elDownloadBtn.innerHTML = `<a href="${imgContent}" class="download-a" onclick="downloadImg(this)" download="GooDLuck!">Download</a>`;
+}
+
+function onShareMeme() {
+  const imgDataUrl = gElCanvas.toDataURL('image/jpeg/png');
+
+  // A function to be called if request succeeds
+  function onSuccess(uploadedImgUrl) {
+    const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl);
+    document.querySelector(
+      '.user-msg'
+    ).innerText = `Your photo is available here: ${uploadedImgUrl}`;
+    console.log('fdsfs');
+    document.querySelector('.share-btn-span').innerHTML = `
+      <a class="btn" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}" title="Share on Facebook" target="_blank" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=${uploadedImgUrl}&t=${uploadedImgUrl}'); return false;">
+         Share   
+      </a>`;
+  }
+  doUploadImg(imgDataUrl, onSuccess);
+}
+
+function doUploadImg(imgDataUrl, onSuccess) {
+  const formData = new FormData();
+  formData.append('png', imgDataUrl);
+
+  fetch('//ca-upload.com/here/upload.php', {
+    method: 'POST',
+    body: formData,
+  })
+    .then((res) => res.text())
+    .then((url) => {
+      console.log('Got back live url:', url);
+      onSuccess(url);
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}
+
+function onKeyWordsFilter(ev) {
+  // ev.preventDefault();
+  const searchValue = document.querySelector('.searchbar-input').value;
+  updateSearchWord(searchValue);
+  keyWordsFilter(ev);
+}
 // TODO:
 /*
 put notes arrange files, and 

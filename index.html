@@ -12,56 +12,55 @@
     <div class="nav-container "></div>
 </header>
 <body onload="init()">
-    <main class="main-content" style="display: none;">
-        <div class="meme-editor">
+    <main class="main-content hide-panels main-layout">
+        <div class="meme-editor flex">
             <div class="left-controller">
-                <div class="canvas-container"><canvas class="canvas" width="500" height="500"></canvas></div>
+                <div class="canvas-container"><canvas class="canvas" width="400" height="400"></canvas></div>
             </div>
             <div class="right-controller">
                 <div class="box-controller">
-                    <div class="back-gallery"><button class="back-gallery-btn grid-btn">Back to Gallery</button></div>
+                    <div class="back-gallery"><button class="back-gallery-btn grid-btn" onclick="onBackGallery()">Back to Gallery</button></div>
                     <input type="text" placeholder="write your message here" class="canvas-input"  onkeyup="onUpdateCurrLine(this.value)"> 
                     <div class="upper-btns">
-                        <button class="grid-btn line-btn" onclick="onRenderNewLine()"></button>
-                        <button class="grid-btn delete" onclick="onClearCanvas()"></button>
-                        <button class=" bigger grid-btn" onclick="onResizeFont('up')">A</button>
-                         <button class=" smaller grid-btn" onclick="onResizeFont('down')">A</button>
+                        <button class="grid-panel-btn line-btn" onclick="onRenderNewLine()"></button>
+                        <button class="grid-panel-btn delete" onclick="onRemoveMeme()"></button>
+                        <button class=" bigger grid-panel-btn" onclick="onResizeFont('up')">A</button>
+                         <button class=" smaller grid-panel-btn" onclick="onResizeFont('down')">A</button>
                     </div>
                     <div class="main-btns-grid">
-                        <button class="color-input-btn"><input type="color" class="color-input grid-btn"  onchange="OnPickColor(this.value)"></button>
-                        <button class="stroke-input-color">S<input type="color" class="stroke-input" onchange="OnPickStroke(this.value)"></button>
-                        <button class=" left grid-btn" onclick="onTxtDirection('left')"></button>
-                        <button class=" center grid-btn" onclick="onTxtDirection('center')"></button>
-                        <button class=" right grid-btn" onclick="onTxtDirection('right')"></button>
+                        <button class="color-input-btn grid-panel-btn"><input type="color" class="color-input"  onchange="OnPickColor(this.value)"></button>
+                        <button class="stroke-input-color grid-panel-btn">S<input type="color" class="stroke-input" onchange="OnPickStroke(this.value)"></button>
+                        <button class=" left grid-panel-btn" onclick="onTxtDirection('left')"></button>
+                        <button class=" center grid-panel-btn" onclick="onTxtDirection('center')"></button>
+                        <button class=" right grid-panel-btn" onclick="onTxtDirection('right')"></button>
                         <select name="font-select" class="font-select" onchange="onFontPick(this.value)">
                             <option value="Impact">impact</option>
                             <option value="Ariel">ariel</option>
                             <option value="Serif">serif</option>
                         </select>
                     </div>
-                    <div class=" stickers-container">
-                        <div class="stickers">
-                    </div></div>
-                    <div class="grid-files">
-                       <button class=" download grid-btn download-btn">Download the MeMe!</button>
-                        <button class=" upload grid-btn upload-btn">Upload Image</button>
-                        
+                    <div class="stickers-container flex">
+                            <button class="previous-sticker grid-btn" onclick="onStickersPage('prev')"><<</button>
+                            <div class="stickers flex"></div>
+                            <button class="next-sticker grid-btn" onclick="onStickersPage('next')">>></button>
                     </div>
-                    <div class="social-media">
-                       <button class=" facebook grid-btn fb-btn">facebook</button>
-                      <button class=" twitter grid-btn tw-btn">twitter</button>
-                        <button class=" instegram grid-btn in-btn">instegram</button>
+                    <div class="grid-files flex">
+                       <button href="#" class="download-btn" onclick="onDownloadImg(this)" download="my-img.jpg"><span class="download-btn-span">Download</span>
+                       </button>
+
+                        <button class="save-btn">Save</button>
+                        <button class="share-btn" onclick="onShareMeme(this, event)"><span class="share-btn-span"></span>Share</button>      
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <div class="panel-control main-content">
-        <div class="searchbar"><input type="search" class="searchbar-input" name="search" ></div>
+    <div class="panel-control main-content main-layout">
+        <div class="searchbar"><input type="search" class="searchbar-input" name="search" onkeypress="onKeyWordsFilter(event)" ></div>
         <div class="keywords-list"></div>
         <button class="more-kewyords">More</button>
     </div>
-    <div class="gallery-container">
+    <div class="gallery-container main-content main-layout">
     </div>
         
         

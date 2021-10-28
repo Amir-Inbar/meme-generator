@@ -1,4 +1,7 @@
 var gImgs = createImages();
+var gStickers = [];
+const PAGE_SIZE = 3;
+var gPageIdx = 0;
 
 function createImages() {
   var imgs = [
@@ -58,7 +61,64 @@ function getImgById(imgId) {
   return gImgs.filter((img) => img.id === imgId);
 }
 
-function uploadImage() {
-  var elFile = document.querySelector('.input-file');
-  elFile.click();
+function uploadImage(ev) {
+  var lastImg = gImgs.length;
+  var newImage = createImage(lastImg + 1, ev.target.files[0].name, []);
+  console.log(newImage);
+  gImgs.push(newImage);
+  setImage(newImage.id);
+  onSetImage(newImage.id);
+}
+
+function createInitStickers() {
+  for (var i = 1; i <= 15; i++) {
+    gStickers.push({ id: i, url: `/stickers/${i}.png` });
+  }
+}
+
+function stickersPage(moveTo) {
+  if (moveTo === 'next') {
+    gPageIdx++;
+    if (gPageIdx * PAGE_SIZE >= gStickers.length) gPageIdx = 0;
+  } else {
+    gPageIdx--;
+    if (gPageIdx <= 0) gPageIdx = 0;
+  }
+}
+
+function getStickers() {
+  var sticker = gStickers;
+  const fromIdx = gPageIdx * PAGE_SIZE;
+  sticker = gStickers.slice(fromIdx, fromIdx + PAGE_SIZE);
+  return sticker;
+}
+
+function getStickerById(stickerId) {
+  return gStickers.filter((sticker) => sticker.id === stickerId);
+}
+
+function getScurrStickers() {
+  return gMeme.stickers;
+}
+
+function addNewSticker(id, canvasW, canvasH, ratio) {
+  const newSticker = createNewSticker(id, canvasW, canvasH, ratio);
+  gMeme.stickers.push(newSticker);
+  gMeme.selectedStickerIdx = id;
+}
+
+function createNewSticker(id, canvasW, canvasH, ratio) {
+  const sticker = getStickerById(id)[0];
+  const width = 80;
+  const height = width * ratio;
+  const newSticker = {
+    src: sticker.url,
+    pos: {
+      x: canvasW / 2 - 40,
+      y: canvasH / 2 - height / 2,
+    },
+    width,
+    height,
+  };
+  return newSticker;
 }

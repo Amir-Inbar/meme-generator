@@ -2,7 +2,7 @@ function renderImages() {
   var elContainerImgs = document.querySelector('.gallery-container');
   var imgs = getImages();
   var htmlStr = `
-  <button class="upload-image grid-btn" onclick="onUploadImage()">Upload Your Image Here!<input class="input-file" type="file" style="visibility:hidden"></button>`;
+  <button class="upload-image grid-btn">Upload Your Image Here!<input class="input-file" onchange="onUploadImage(event)" type="file"></button>`;
   imgs.map((img) => {
     htmlStr += `
       <div class="card">
@@ -14,18 +14,60 @@ function renderImages() {
 }
 
 function onSetImage(imgId) {
-  var elMainContent = document.querySelector('.main-content');
-  var elGalleryContainer = document.querySelector('.gallery-container');
-
-  elGalleryContainer.style.display = 'none';
-  elMainContent.style.display = 'block';
+  const elMainContents = document.querySelectorAll('.main-content');
+  elMainContents.forEach((elMainContainer) => {
+    elMainContainer.classList.toggle('hide-panels');
+  });
   var meme = getMeme();
   if (meme.selectedImgId === imgId) return;
   setImage(imgId);
   renderCanvas();
 }
 
-function onUploadImage() {
-  uploadImage();
+function onUploadImage(ev) {
+  uploadImage(ev);
+  renderImages();
   renderCanvas();
+}
+
+function renderStickers() {
+  const elStickers = document.querySelector('.stickers');
+  var stickers = getStickers();
+  var htmlStr = '';
+  stickers.map((sticker) => {
+    htmlStr += `<div class="stick-card">
+      <img src="${sticker.url}" alt="sticker" class="grid-btn" onclick="onSetSticker(${sticker.id})">
+      </div>`;
+  });
+  elStickers.innerHTML = htmlStr;
+}
+
+function onStickersPage(moveTo) {
+  stickersPage(moveTo);
+  renderStickers();
+}
+
+function onSetSticker(stickerId) {
+  const sticker = getStickerById(stickerId)[0];
+  const img = new Image();
+  img.src = sticker.url;
+  const ratio = img.height / img.width;
+  addNewSticker(stickerId, gElCanvas.width, gElCanvas.height, ratio);
+  emptyInput();
+  renderCanvas();
+}
+
+function addStickers() {
+  var stickers = getScurrStickers();
+  stickers.map((sticker) => {
+    const img = new Image();
+    img.src = sticker.src;
+    gCtx.drawImage(
+      img,
+      sticker.pos.x,
+      sticker.pos.y,
+      sticker.width,
+      sticker.height
+    );
+  });
 }
