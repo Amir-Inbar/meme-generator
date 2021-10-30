@@ -19,7 +19,6 @@ function onSetImage(imgId) {
     elMainContainer.classList.toggle('hide-panels');
   });
   var meme = getMeme();
-  if (meme.selectedImgId === imgId) return;
   setImage(imgId);
   renderCanvas();
 }

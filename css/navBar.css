@@ -61,40 +61,31 @@
 	}
 	.nav-links {
 		opacity: 0;
-		background-color: #5d4954;
-		width: 50%;
+		background-color: rgba(99, 107, 103, 0.85);
+		width: 75%;
 		position: absolute;
 		display: flex;
 		flex-direction: column;
-		min-height: 93vh;
-		right: 0;
 		top: 50px;
 		align-items: center;
-		justify-content: space-evenly;
-		transform: translateX(100%);
+		transform: translateY(-150%);
 		transition: transform 0.5s ease-in;
 		font-size: 30px;
+		transition: .6s;
+		z-index: 1;
+		transform: translateY(-150);
 	}
-	.nav-links div {
+	.nav-links {
 		opacity: 0;
 	}
 	.burger {
 		display: block;
 	}
 }
-.nav-active {
-	transform: translateX(0%);
-}
 
-@keyframes navSlide {
-	from {
-		opacity: 0;
-		transform: translateX(50px);
-	}
-	to {
-		opacity: 1;
-		transform: translateX(0px);
-	}
+.nav-active {
+	opacity: 1;
+	transform: translateX(0%);
 }
 
 .toggle .line1 {

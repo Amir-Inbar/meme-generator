@@ -144,6 +144,7 @@ function renderCanvas() {
   var meme = getMeme();
   var img = new Image();
   img.src = `./img/${meme.selectedImgId}.jpg`;
+  console.log(img)
   img.onload = () => {
     gCurrRatio = img.height / img.width;
     resizeCanvas();
@@ -310,6 +311,14 @@ function hideSaveModal() {
   elSaveContainer.style.display = 'none';
 }
 
+function onOpenMemeEditor() {
+  const elMainContents = document.querySelectorAll('.main-content');
+  elMainContents.forEach((elMainContainer) => {
+    elMainContainer.classList.toggle('hide-panels');
+  });
+
+  renderCanvas()
+}
 // TODO:
 /*
 put notes arrange files, and 

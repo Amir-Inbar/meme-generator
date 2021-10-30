@@ -187,7 +187,7 @@ img {
 
 .font-select {
 	border-radius: 10px;
-	font-size: 1.5rem;
+	font-size: 1rem;
 	grid-column: span 2;
 }
 .color-input::-webkit-color-swatch {
@@ -362,7 +362,7 @@ img {
 }
 .searchbar-input {
 	cursor: pointer;
-	font-size: 2.5rem;
+	font-size: 1.7rem;
 	border-radius: 50px;
 	width: 100%;
 }
@@ -519,11 +519,6 @@ img {
 	text-align: center;
 }
 
-.save-modal-memes {
-	grid-template-columns: repeat(4, 200px);
-	grid-template-rows: repeat(2, 200px);
-}
-
 .save-meme-modal {
 	padding: 10px;
 }
@@ -609,6 +604,17 @@ img {
 	}
 } */
 
+@media (max-width: 780px) {
+	.save-modal-preview {
+		max-width: 85%;
+		max-height: 100vh;
+	}
+	.save-modal-meme {
+		grid-template-columns: repeat(1, 50px);
+		grid-template-rows: repeat(auto-fill, 50px);
+	}
+}
+
 @media (min-width: 380px) {
 	.main-layout {
 		max-width: 100%;
@@ -635,6 +641,16 @@ img {
 	.font-select {
 		font-size: 1rem;
 	}
+	.searchbar-input {
+		font-size: 2rem;
+	}
+	.save-modal-meme {
+		grid-template-columns: repeat(1, 50px);
+		grid-template-rows: repeat(auto-fit, 50px);
+	}
+	.save-modal-meme > img {
+		height: 40%;
+	}
 }
 @media (min-width: 980px) {
 	.main-layout {
@@ -656,14 +672,18 @@ img {
 		width: 3rem;
 	}
 	.font-select {
-		font-size: 2rem;
+		font-size: 1.5rem;
 	}
 	.back-gallery-btn {
 		font-size: 1rem;
 	}
+	.save-modal-memes {
+		grid-template-columns: repeat(2, 200px);
+		grid-template-rows: repeat(2, 200px);
+	}
 }
 
-@media (max-width: 1380px) {
+@media (max-width: 780px) {
 	.show-keywords {
 		display: none;
 	}
