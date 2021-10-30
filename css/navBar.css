@@ -71,7 +71,6 @@
 		transform: translateY(-150%);
 		transition: transform 0.5s ease-in;
 		font-size: 30px;
-		transition: .6s;
 		z-index: 1;
 		transform: translateY(-150);
 	}

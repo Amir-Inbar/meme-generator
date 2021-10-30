@@ -319,6 +319,14 @@ function onOpenMemeEditor() {
 
   renderCanvas()
 }
+function closeAboutMeModal() {
+  document.querySelector('.about-me-container').style.display = 'none'
+}
+
+function openAboutMeModal() {
+  document.querySelector('.about-me-container').style.display = 'block'
+
+}
 // TODO:
 /*
 put notes arrange files, and 

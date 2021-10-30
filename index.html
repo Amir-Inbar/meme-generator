@@ -21,7 +21,7 @@
                 <li class="nav-link3" onclick="showSavedMemes()">
                     <a >Saved Meme</a>
                 </li>
-                <li class="nav-link4">
+                <li class="nav-link4" onclick="openAboutMeModal()">
                     <a href="#">About Me</a>
                 </li>
             </ul>
@@ -96,7 +96,17 @@
         <h1>Your save Memes</h1>
         <div class="save-modal-memes"></div>
     </div> 
-    
+    <footer>
+        <section class="about-me-container">
+            <h1> About Me</h1>
+            <div class="about-me-flex flex">
+            <button class="about-me-btn" onclick="closeAboutMeModal()">X</button>
+            <img src="./myImg/myimg.jfif">
+            <p>dear guest! it is very nice to meet you, my nams is amir and im a website developer. i got a passion and intrest in web, as a part of my work in Codey academy i've built this meme generator. i hope you enjoyed using this app and created some cool memes
+            </p>
+        </div>
+        </section>
+    </footer>
         
     <script src="./utils/navBar.js"></script>
     <script src="./utils/utils.js"></script>
