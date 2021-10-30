@@ -630,7 +630,6 @@ img {
 		grid-template-rows: repeat(auto-fill, 50px);
 	}
 	canvas {
-		margin-inline-start: 20px;
 	}
 	.about-me-flex {
 		flex-direction: column;
@@ -638,6 +637,13 @@ img {
 	}
 	.about-me-flex p {
 		font-size: 1rem;
+	}
+	.left-controller {
+		margin: auto;
+	}
+	canvas {
+		width: 300px;
+		margin-inline-start: 20px;
 	}
 }
 
