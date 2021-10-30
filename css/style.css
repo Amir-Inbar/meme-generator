@@ -30,7 +30,8 @@ img {
 	border: 1px solid #f7f7f7;
 	margin: auto;
 	max-width: 100%;
-	background-color: rgba(207, 238, 198, 0.671);
+	background: linear-gradient(85deg, #a3a1a1, #262626);
+
 	/* margin-inline-end: 25px;
 	margin-inline-start: 25px; */
 	border: 3px solid black;
