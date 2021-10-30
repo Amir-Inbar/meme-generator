@@ -72,7 +72,7 @@ function uploadImage(ev) {
 
 function createInitStickers() {
   for (var i = 1; i <= 15; i++) {
-    gStickers.push({ id: i, url: `/stickers/${i}.png` });
+    gStickers.push({ id: i, url: `./stickers/${i}.png` });
   }
 }
 
