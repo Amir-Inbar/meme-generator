@@ -50,6 +50,7 @@ function emptyInput() {
 function onDown(ev) {
   emptyInput();
   const pos = getEvPos(ev);
+  console.log(pos)
   if (!lineClicked(pos)) return;
   console.log(pos)
   gDragStartPos = pos;
@@ -110,7 +111,6 @@ function lineClicked(pos) {
   }
   renderCanvas();
   if (idx !== -1 || stickerIdx !== -1 || isSizing) {
-    console.log(pos)
     onFillInput();
     gIsDragging = true;
     if (isSizing) {
@@ -128,13 +128,14 @@ function getEvPos(ev) {
     x: ev.offsetX,
     y: ev.offsetY,
   };
-  if (gTouchEvs.includes(ev.type)) {
+  if (gTouchEvs.includes(ev.type)) {``
     ev.preventDefault();
     ev = ev.changedTouches[0];
     pos = {
-      x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
-      y: ev.pageY - ev.target.offsetTop - ev.target.clientTop,
+      x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft - 25,
+      y: ev.pageY - ev.target.offsetTop - ev.target.clientTop - 75 ,
     };
+    
   }
   return pos;
 }

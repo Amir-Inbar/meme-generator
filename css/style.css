@@ -584,7 +584,7 @@ img {
 	max-height: 130px;
 	object-fit: cover;
 } */
-
+/* 
 @media (max-width: 480px) {
 	.main-layout {
 		width: 100%;
@@ -607,9 +607,9 @@ img {
 	.font-select {
 		font-size: 1rem;
 	}
-}
+} */
 
-@media (min-width: 480px) {
+@media (min-width: 380px) {
 	.main-layout {
 		max-width: 100%;
 	}
