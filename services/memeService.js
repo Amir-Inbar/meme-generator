@@ -4,11 +4,12 @@ var gOldTxt = '';
 gElCanvas.width = 500;
 gElCanvas.height = 300;
 var gKeywords = [];
+var gSaveMeme = [];
 var gMeme = {
   selectedImgId: 1,
   selectedLineIdx: 0,
   selectStickerIdx: 0,
-  searchWord: 'test',
+  storage: false,
   stickers: [],
   lines: [
     {
@@ -53,6 +54,15 @@ function _createNewLine(
 
 function getMeme() {
   return gMeme;
+}
+
+function resetCanvas() {
+  clearInput()
+  gMeme.lines = []
+  gMeme.stickers = []
+  gMeme.storage = false
+  gMeme.lines.push(_createNewLine())
+  renderCanvas()
 }
 
 function resizeCanvas() {
@@ -195,35 +205,26 @@ function resizingSticker(pos, startPos) {
   gMeme.stickers[idx].height += dx;
 }
 
-function keyWordsFilter(evKey) {
-  var keywords = gImgs.map((img) => {
-    return img.keywords.map((key) => key === evKey.key);
-  });
+function saveMeme() {
+  const imgContent = gElCanvas.toDataURL('image/jpeg/png');
+  addMemeSave(imgContent);
 }
 
-function updateKeywords() {
-  return gImgs.map((img) => {
-    img.keywords.map((word) => {
-      if (!gKeywords[word]) {
-        gKeywords[word] = 1;
-        return;
-      }
-      gKeywords[word] += 1;
-    });
-  });
+function addMemeSave(imgContent) {
+  var id = gImgs.length + 1
+  gSaveMeme.push({ id, imgContent });
+  gImgs.push({id,imgContent})
+  saveToStorage('save_memes', gSaveMeme);
 }
 
-function getKeywords() {
-  return gKeywords;
+function getSavedMemes() {
+  var gSaveMeme = loadFromStorage('save_memes');
+  if (!gSaveMeme) gSaveMeme = [];
+  return gSaveMeme;
 }
 
-function updateSearchWord(word) {
-  if (gMeme.searchWord === 'test') gMeme.searchWord = '';
-  gMeme.searchWord = word;
-}
-
-function getPartImgs() {
-  const searchWord = gMeme.searchWord;
-  if (!searchWord) return gImgs;
-  return gImgs.filter((img) => img.keywords.includes(searchWord));
+function getImageById(imgId) {
+  console.log(imgId)
+  console.log(gImgs[0].id)
+  return gImgs.forEach((img) => img.id === imgId)
 }

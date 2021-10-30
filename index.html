@@ -9,7 +9,29 @@
     <title>MeMe Generator</title>
 </head>
 <header>
-    <div class="nav-container "></div>
+    <div class="nav-container">
+        <div class="nav-logo">Meme Generator</div>
+            <ul class= "nav-links main-nav">
+                <li class="nav-link1">
+                    <a onclick="onBackGallery()">Gallery</a>
+                </li>
+                <li class="nav-link2">
+                    <a href="#">MeMe Editor</a>
+                </li>
+                <li class="nav-link3" onclick="showSavedMemes()">
+                    <a >Saved Meme</a>
+                </li>
+                <li class="nav-link4">
+            <a href="#">About Me</a>
+                </li>
+            </ul>
+<div class="burger" onclick="navSlide()">
+<div class="side-nav line1"></div>
+<div class="side-nav line2"></div>
+<div class="side-nav line3"></div>
+</div>
+</div>
+    </div>
 </header>
 <body onload="init()">
     <main class="main-content hide-panels main-layout">
@@ -48,7 +70,7 @@
                        <button href="#" class="download-btn" onclick="onDownloadImg(this)" download="my-img.jpg"><span class="download-btn-span">Download</span>
                        </button>
 
-                        <button class="save-btn">Save</button>
+                        <button class="save-btn" onclick="onSaveMeme()">Save</button>
                         <button class="share-btn" onclick="onShareMeme(this, event)"><span class="share-btn-span"></span>Share</button>      
                     </div>
                 </div>
@@ -56,17 +78,29 @@
         </div>
     </main>
     <div class="panel-control main-content main-layout">
-        <div class="searchbar"><input type="search" class="searchbar-input" name="search" onkeypress="onKeyWordsFilter(event)" ></div>
-        <div class="keywords-list"></div>
-        <button class="more-kewyords">More</button>
+        <div class="searchbar"><input list="search-keywords" placeholder="Search keywords" class="searchbar-input" name="searchbar-input" onkeyup="onKeyWordsFilter(event)" ></div>
+        <datalist id="search-keywords"></datalist>
+        <div class="show-keywords"></div>
+        <button class="show-save-iamge" onclick="showSavedMemes()">Show Save Image</button>
     </div>
     <div class="gallery-container main-content main-layout">
     </div>
+    <div class="save-modal-container" hidden>
         
-        
+        <div class="save-modal">
+            We just save your meme
+        </div>
+    </div>
+    <div class="save-modal-preview" hidden>
+        <button class="save-modal-btn" onclick="closeModalPreview()">X</button>
+        <h1>Your save Memes</h1>
+        <div class="save-modal-memes"></div>
+    </div> 
+    
         
     <script src="./utils/navBar.js"></script>
     <script src="./utils/utils.js"></script>
+    <script src="./utils/storage.js"></script>
     <script src="./services/imageService.js"></script>
     <script src="./services/memeService.js"></script>
     <script src="./controllers/imageController.js"></script>

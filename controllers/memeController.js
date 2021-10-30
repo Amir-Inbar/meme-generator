@@ -5,12 +5,14 @@ var gCurrRatio;
 var gCurrDrag;
 var gScalling = false;
 function init() {
-  createNav();
   renderImages();
   createInitStickers();
   renderStickers();
   addEventListeners();
   renderCanvas();
+  updateKeywords();
+  renderKeywords();
+  renderKeywordsSize();
 }
 
 function addEventListeners() {
@@ -49,6 +51,7 @@ function onDown(ev) {
   emptyInput();
   const pos = getEvPos(ev);
   if (!lineClicked(pos)) return;
+  console.log(pos)
   gDragStartPos = pos;
   gElCanvas.style.cursor = 'grabbing';
 }
@@ -107,6 +110,7 @@ function lineClicked(pos) {
   }
   renderCanvas();
   if (idx !== -1 || stickerIdx !== -1 || isSizing) {
+    console.log(pos)
     onFillInput();
     gIsDragging = true;
     if (isSizing) {
@@ -127,7 +131,6 @@ function getEvPos(ev) {
   if (gTouchEvs.includes(ev.type)) {
     ev.preventDefault();
     ev = ev.changedTouches[0];
-    console.log(ev);
     pos = {
       x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
       y: ev.pageY - ev.target.offsetTop - ev.target.clientTop,
@@ -139,7 +142,7 @@ function getEvPos(ev) {
 function renderCanvas() {
   var meme = getMeme();
   var img = new Image();
-  img.src = `../img/${meme.selectedImgId}.jpg`;
+  img.src = `./img/${meme.selectedImgId}.jpg`;
   img.onload = () => {
     gCurrRatio = img.height / img.width;
     resizeCanvas();
@@ -237,6 +240,7 @@ function onBackGallery() {
   elMainContents.forEach((elMainContainer) => {
     elMainContainer.classList.toggle('hide-panels');
   });
+  resetCanvas()
 }
 
 function onDownloadImg(elLink) {
@@ -282,12 +286,29 @@ function doUploadImg(imgDataUrl, onSuccess) {
     });
 }
 
-function onKeyWordsFilter(ev) {
-  // ev.preventDefault();
-  const searchValue = document.querySelector('.searchbar-input').value;
-  updateSearchWord(searchValue);
-  keyWordsFilter(ev);
+function drawArc(x, y, size = 5, color = 'blue') {
+  gCtx.beginPath();
+  gCtx.lineWidth = '6';
+  gCtx.arc(x, y, size, 0, 2 * Math.PI);
+  gCtx.strokeStyle = 'white';
+  gCtx.stroke();
+  gCtx.fillStyle = color;
+  gCtx.fill();
 }
+
+function onSaveMeme() {
+  saveMeme();
+  var elSaveContainer = document.querySelector('.save-modal-container');
+  elSaveContainer.style.display = 'block';
+  setTimeout(hideSaveModal, 2000);
+  renderCanvas();
+}
+
+function hideSaveModal() {
+  var elSaveContainer = document.querySelector('.save-modal-container');
+  elSaveContainer.style.display = 'none';
+}
+
 // TODO:
 /*
 put notes arrange files, and 

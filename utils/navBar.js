@@ -1,37 +1,17 @@
-function createNav() {
-    var elNavContainer = document.querySelector('.nav-container');
-    var links = ['about', 'contant us', 'projects', 'Webpage'];
-var burgerLinks = ['line1', 'line2', 'line3'];
-var htmlStr = `
-<div class="nav-logo">NAVBAR</div>
-<div class="nav-links">
-`;
-links.forEach(
-(link, idx) =>
-  (htmlStr += `<div class="nav-link link${
-    idx + 1
-  }"><a href="#">${link}</a></div>`)
-);
-htmlStr += `</div><div class="burger" onclick="navSide()">`;
-burgerLinks.forEach(
-(line) => (htmlStr += `<div class="side-nav ${line}"></div>`)
-);
-htmlStr += `</div>`;
+function navSlide() {
+  const elBurger = document.querySelector('.burger');
+  const elNavLinks = document.querySelectorAll('.main-nav a');
+  const elNav = document.querySelector('.main-nav');
 
-elNavContainer.innerHTML = htmlStr;
+  elNav.style.opacity = 1;
+  elNav.classList.toggle('nav-active');
+
+  elNavLinks.forEach((link, idx) => {
+    if (link.style.animation) {
+      link.style.animation = '';
+    } else {
+      link.style.animation = `navSlide .9s ease forwards ${idx / 7 + 1}s`;
+    }
+  });
+  elBurger.classList.toggle('toggle');
 }
-
-const navSide = () => {
-const elBurger = document.querySelector('.burger');
-const elNavLink = document.querySelector('.nav-links');
-const elNavLinks = document.querySelectorAll('.nav-links div');
-
-elNavLink.classList.toggle('nav-active');
-elNavLink.style.opacity = 1;
-
-elNavLinks.forEach((link, idx) => {
-if (link.style.animation) link.style.animation = '';
-else link.style.animation = `navSlide .5s ease forwards ${idx / 7 + 0.5}s`;
-});
-elBurger.classList.toggle('toggle');
-};

@@ -13,7 +13,7 @@ function createImages() {
       'human',
       'adult',
     ]),
-    createImage(3, '../img/3.jpg', ['dog', 'sweet, kiss', 'animal']),
+    createImage(3, '../img/3.jpg', ['dog', 'sweet', 'kiss', 'animal']),
     createImage(4, '../img/4.jpg', ['dog', 'baby,', 'bed', 'animal']),
     createImage(5, '../img/5.jpg', ['strong', 'beach', 'baby']),
     createImage(6, '../img/6.jpg', ['cat', 'sleep']),
@@ -104,6 +104,7 @@ function getScurrStickers() {
 function addNewSticker(id, canvasW, canvasH, ratio) {
   const newSticker = createNewSticker(id, canvasW, canvasH, ratio);
   gMeme.stickers.push(newSticker);
+  var { pos } = newSticker;
   gMeme.selectedStickerIdx = id;
 }
 
@@ -121,4 +122,56 @@ function createNewSticker(id, canvasW, canvasH, ratio) {
     height,
   };
   return newSticker;
+}
+
+function updateKeywords() {
+  return gImgs.map((img) => {
+    img.keywords.map((word) => {
+      if (!gKeywords[word]) {
+        gKeywords[word] = 1;
+        return;
+      }
+      gKeywords[word] += 1;
+    });
+  });
+}
+
+function getKeywords() {
+  return gKeywords;
+}
+
+function updateSearchWord(word) {
+  if (gMeme.searchWord === 'show all') word = '';
+  gMeme.searchWord = word;
+}
+
+function getPartImgs() {
+  const searchWord = gMeme.searchWord;
+  if (!searchWord) return gImgs;
+  var filterImgs = [];
+  gImgs.filter((img) => {
+    return img.keywords.filter((kw) => {
+      if (searchWord === kw.substr(0, searchWord.length)) {
+        filterImgs.push(img);
+      }
+    });
+  });
+  return filterImgs;
+}
+
+function keywordClick(el) {
+  console.log(el.classList[1]);
+  let keywords = document.querySelectorAll('.keywords-selection');
+  let elText;
+  keywords.forEach((kw) => {
+    if (kw.classList[1] === el.classList[1]) elText = kw.classList[1];
+  });
+  let elTxt = document.querySelector(`.${elText}`);
+  increaseFontSize(elTxt.innerText);
+}
+
+function increaseFontSize(elTxt) {
+  if (gKeywords[elTxt] === 8) return;
+  gKeywords[elTxt]++;
+  renderKeywordsSize();
 }

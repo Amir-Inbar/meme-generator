@@ -1,5 +1,5 @@
 .nav-container {
-	background-color: #5d4954;
+	background-color: #383b42;
 	font-size: 20px;
 	display: flex;
 	justify-content: space-around;
@@ -15,6 +15,27 @@
 .nav-container a {
 	text-decoration: none;
 	color: white;
+}
+
+.main-nav li {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 0.1px solid black;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 3rem;
+	width: 100%;
+}
+.main-nav a {
+	color: #ffffff;
+	font-family: lato-bold;
+	font-size: 1rem;
+	font-weight: 700;
+}
+.main-nav li:hover {
+	box-shadow: inset 0px -6px 0px 0px #58c93a;
 }
 
 .nav-links {
