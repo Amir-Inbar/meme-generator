@@ -87,12 +87,12 @@
 	transform: translateX(0%);
 }
 
-.toggle .line1 {
+.toggle .upperline {
 	transform: rotate(-45deg) translate(-5px, 6px);
 }
-.toggle .line2 {
+.toggle .centerline {
 	opacity: 0;
 }
-.toggle .line3 {
+.toggle .downline {
 	transform: rotate(45deg) translate(-5px, -6px);
 }
